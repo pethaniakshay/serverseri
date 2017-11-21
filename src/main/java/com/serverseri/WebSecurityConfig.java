@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.serverseri.core.constants.Constants;
 import com.serverseri.security.AfterLoggedInService;
 
 @Configuration
@@ -31,8 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http
     .authorizeRequests()
     .antMatchers("/resources/**", "/registration","/","/about","/contact").permitAll()
-    .antMatchers("/admin").hasRole("ADMIN")
-    .antMatchers("/dashboard").hasRole("USER")
+    .antMatchers("/admin").hasRole(Constants.ADMIN)
+    .antMatchers("/dashboard").hasRole(Constants.USER)
     .anyRequest().authenticated()
     .and()
     .formLogin()

@@ -12,12 +12,12 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 public class Main extends SpringBootServletInitializer {
 
+  private static Logger logger = LoggerFactory.getLogger(Main.class);
+
   @Override
   protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
     return application.sources(Main.class);
   }
-
-  private static Logger logger = LoggerFactory.getLogger(Main.class);
 
   public static void main(String args[]) {
     logger.debug("Application Started");
