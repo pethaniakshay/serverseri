@@ -1,5 +1,7 @@
 package com.serverseri.controllers;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import com.serverseri.model.User;
 import com.serverseri.service.SecurityService;
 import com.serverseri.service.UserService;
 import com.serverseri.service.mail.MailService;
+import com.serverseri.validator.SignUpFormValidator;
 import com.serverseri.validator.UserValidator;
 
 @Controller
@@ -31,9 +34,12 @@ public class PublicController {
 
   @Autowired
   private UserValidator userValidator;
-  
+
   @Autowired
   private MailService mailService;
+
+  @Autowired
+  private SignUpFormValidator signUpFormValidator;
 
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public String home(Model model) {
@@ -65,18 +71,18 @@ public class PublicController {
 
   @RequestMapping(value ="/login", method = RequestMethod.GET)
   public String customLogin(Model model, String error, String logout) {
-	  
-	  if (error != null) {
-		  model.addAttribute("error", "Your username and password is invalid.");
-		  logger.debug("Errors ....................");
-		  
-	  }
-	      
-	  if (logout != null) {
-		  model.addAttribute("message", "You have been logged out successfully.");
-		  logger.debug("Logout .....................");
-	  }
-	     
+
+    if (error != null) {
+      model.addAttribute("error", "Your username and password is invalid.");
+      logger.debug("Errors ....................");
+
+    }
+
+    if (logout != null) {
+      model.addAttribute("message", "You have been logged out successfully.");
+      logger.debug("Logout .....................");
+    }
+
 
     logger.debug("************In Custom login page************");
 
@@ -100,6 +106,7 @@ public class PublicController {
     userService.save(userForm);
     securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
     String loggedInUserRole = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().toString();
+
     if (loggedInUserRole.equals(Constants.ROLE_ADMIN)) {
       return "redirect:/admin";
     } else if (loggedInUserRole.equals(Constants.ROLE_USER)) {
@@ -109,11 +116,31 @@ public class PublicController {
       return "redirect:/";
     }
   }
-  
+
+  @RequestMapping(value ="/signup", method = RequestMethod.GET)
+  public String signup(Model model) {
+    logger.debug("Goig to display signup form");
+    return "dev_signup";
+  }
+
+  @RequestMapping(value ="/signup", method = RequestMethod.POST)
+  public String signup(@ModelAttribute User userForm, HttpServletRequest request){
+    logger.debug("Going to save the signup form");
+
+    /*if(!signUpFormValidator.validate(userForm)){
+      return "dev_signup";
+    }*/
+
+    userService.save(userForm);
+    securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
+    logger.debug("Redirecting to the Dashbaord");
+
+    return "redirect:/dashboard";
+  }
+
   @RequestMapping(value = "/mail" , method = RequestMethod.GET)
   public String mailTester(Model model) {
-	  
-	  mailService.sendMail("yoserverseri@gmail.com","patelaksh412@gmail.com","Test Mail","Hey this is the Asynchronous mail service of the serverseri.");
-	  return "sample_mail_sender";
+    mailService.sendMail("yoserverseri@gmail.com","patelaksh412@gmail.com","Test Mail","Hey this is the Asynchronous mail service of the serverseri.");
+    return "sample_mail_sender";
   }
 }
