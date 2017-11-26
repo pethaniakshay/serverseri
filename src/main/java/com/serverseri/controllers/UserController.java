@@ -29,7 +29,8 @@ public class UserController {
   @Autowired
   private UserValidator userValidator;
 
-  @RequestMapping(value = { "/welcome","/hello" }, method = RequestMethod.GET)
+  @RequestMapping(value = { "/welcome" }, method = RequestMethod.GET)
+
   public String welcome(Model model) {
     logger.debug("Welcome");
     return "welcome";
@@ -40,9 +41,9 @@ public class UserController {
     logger.debug("User  Dashboard");
     return "dashboard";
   }
-  
+
   @RequestMapping(value="/test", method = RequestMethod.GET)
   public String test() {
-	  return "test";
+    return "test";
   }
 }

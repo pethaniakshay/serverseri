@@ -30,15 +30,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
-    .authorizeRequests()
-    .antMatchers("/resources/**", "/registration","/","/about","/contact","signup").permitAll()
+    .authorizeRequests() //Manage what pages allow to whom
+    .antMatchers("/resources/**", "/registration","/","/about","/contact","/signup").permitAll()
     .antMatchers("/admin").hasRole(Constants.ADMIN)
     .antMatchers("/dashboard/**").hasRole(Constants.USER)
     .anyRequest().authenticated()
     .and()
-    .formLogin()
+    .formLogin() //User Login handler
     .loginPage("/login")
-    .permitAll().successHandler(loginSuccessHandler)
+    .permitAll().successHandler(loginSuccessHandler) //Sucessful login handler.
     .and()
     .logout()
     .permitAll();

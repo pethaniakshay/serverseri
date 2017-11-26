@@ -75,6 +75,10 @@
             </div>
           </fieldset>
         </form>
+        
+        <c:if test="${hasError}">
+            ${error1}
+        </c:if>
       </div>
     </div>
   </div>

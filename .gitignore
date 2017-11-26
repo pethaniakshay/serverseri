@@ -14,6 +14,7 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+<<<<<<< Updated upstream
 
 # External tool builders
 .externalToolBuilders/
@@ -64,3 +65,7 @@ local.properties
 target/
 
 # End of https://www.gitignore.io/api/eclipse
+=======
+.settings
+target/
+>>>>>>> Stashed changes
