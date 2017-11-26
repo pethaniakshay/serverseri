@@ -49,6 +49,8 @@ public class PublicController {
   @RequestMapping(value = "/about", method = RequestMethod.GET)
   public String about(Model model) {
     logger.debug("About");
+    
+    
     return "about";
   }
 

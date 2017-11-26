@@ -13,6 +13,7 @@ import com.serverseri.service.UserService;
 import com.serverseri.validator.UserValidator;
 
 @Controller
+@RequestMapping("/dashboard")
 public class UserController {
   private static final org.slf4j.Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -28,15 +29,20 @@ public class UserController {
   @Autowired
   private UserValidator userValidator;
 
-  @RequestMapping(value = { "/welcome" }, method = RequestMethod.GET)
+  @RequestMapping(value = { "/welcome","/hello" }, method = RequestMethod.GET)
   public String welcome(Model model) {
     logger.debug("Welcome");
     return "welcome";
   }
 
-  @RequestMapping(value = "/dashboard" , method = RequestMethod.GET)
+  @RequestMapping(value = {"/",""} , method = RequestMethod.GET)
   public String dashboard(Model model) {
     logger.debug("User  Dashboard");
     return "dashboard";
+  }
+  
+  @RequestMapping(value="/test", method = RequestMethod.GET)
+  public String test() {
+	  return "test";
   }
 }

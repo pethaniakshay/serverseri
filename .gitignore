@@ -12,4 +12,5 @@ tmp/
 local.properties
 .loadpath
 .recommenders
-/target
+.settings
+target/**
