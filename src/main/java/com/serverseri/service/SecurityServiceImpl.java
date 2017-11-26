@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import com.serverseri.model.Role;
-
 @Service
 public class SecurityServiceImpl implements SecurityService{
   @Autowired
@@ -31,10 +29,10 @@ public class SecurityServiceImpl implements SecurityService{
 
     return null;
   }
-  
+
   @Override
   public String getLoggedInUserRole() {
-	  return  SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().toString();
+    return  SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().toString();
   }
 
   @Override

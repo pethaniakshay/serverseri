@@ -1,4 +1,3 @@
-
 # Created by https://www.gitignore.io/api/eclipse
 
 ### Eclipse ###
@@ -14,7 +13,6 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-<<<<<<< Updated upstream
 
 # External tool builders
 .externalToolBuilders/
@@ -61,11 +59,8 @@ local.properties
 # JDT-specific (Eclipse Java Development Tools)		
 .classpath
 
-# Target folder
-target/
-
-# End of https://www.gitignore.io/api/eclipse
-=======
 .settings
 target/
->>>>>>> Stashed changes
+
+
+# End of https://www.gitignore.io/api/eclipse
