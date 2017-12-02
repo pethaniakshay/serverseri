@@ -1,5 +1,6 @@
 package com.serverseri.controllers;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -34,16 +35,20 @@ public class PublicController {
   @Autowired
   private SignUpFormValidator signUpFormValidator;
 
+  @Autowired
+  private ServletContext context;
+
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public String home(Model model) {
+    logger.debug("Real Path:" + context.getRealPath(""));
     return "home";
   }
 
   @RequestMapping(value = "/about", method = RequestMethod.GET)
   public String about(Model model) {
     logger.debug("About");
-    
-    
+
+
     return "about";
   }
 

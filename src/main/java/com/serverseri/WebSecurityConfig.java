@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http
     .authorizeRequests() //Manage what pages allow to whom
-    .antMatchers("/resources/**", "/registration","/","/about","/contact","/signup").permitAll()
+    .antMatchers("/resources/**", "/registration","/","/about","/contact","/signup","/test/**").permitAll()
     .antMatchers("/admin").hasRole(Constants.ADMIN)
     .antMatchers("/dashboard/**").hasRole(Constants.USER)
     .anyRequest().authenticated()
