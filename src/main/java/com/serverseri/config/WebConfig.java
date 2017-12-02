@@ -1,4 +1,4 @@
-package com.serverseri;
+package com.serverseri.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.AntPathMatcher;
