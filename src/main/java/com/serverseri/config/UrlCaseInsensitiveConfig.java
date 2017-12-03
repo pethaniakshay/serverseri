@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 //Configuration for the caseinsensitive mapping of the path
 @Configuration
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class UrlCaseInsensitiveConfig extends WebMvcConfigurerAdapter {
   @Override
   public void configurePathMatch(PathMatchConfigurer configurer) {
     AntPathMatcher matcher = new AntPathMatcher();
