@@ -16,7 +16,6 @@ import com.serverseri.model.User;
 import com.serverseri.service.SecurityService;
 import com.serverseri.service.UserService;
 import com.serverseri.service.mail.MailService;
-import com.serverseri.validator.SignUpFormValidator;
 
 @Controller
 public class PublicController {
@@ -31,9 +30,6 @@ public class PublicController {
 
   @Autowired
   private MailService mailService;
-
-  @Autowired
-  private SignUpFormValidator signUpFormValidator;
 
   @Autowired
   private ServletContext context;
