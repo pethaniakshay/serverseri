@@ -50,7 +50,7 @@
           <form action="${contextPath}/login" class="login-form validate" id="login-form" method="POST" name="login-form">
             <div class="row">
               <div class="form-group col-md-10">
-                <label class="form-label">Username</label>
+                <label class="form-label">Email</label>
                 <input class="form-control" id="username" name="username" type="text" required>
               </div>
             </div>

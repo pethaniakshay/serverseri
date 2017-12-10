@@ -38,7 +38,7 @@
               <!-- Username -->
               <label class="control-label" for="fullname">Full Name</label>
               <div class="controls">
-                <input type="text" id="username" name="username" placeholder="" class="input-xlarge">
+                <input type="text" id="fullName" name="fullName" placeholder="" class="input-xlarge">
               </div>
             </div>
 

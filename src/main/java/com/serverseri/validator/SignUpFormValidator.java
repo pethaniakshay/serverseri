@@ -39,7 +39,7 @@ public class SignUpFormValidator {
       return "Please Enter the Email Address.";
     }
 
-    if(userForm.getUsername() != null && !userForm.getUsername().isEmpty()) {
+    if(userForm.getEmail() != null && !userForm.getEmail().isEmpty()) {
       //Here we treat username as the Full name so no need to validate it fot now.
       /*if(userForm.getUsername().length() < 4) {
         return "Username Must "

@@ -31,15 +31,10 @@ public class UserServiceImpl implements UserService {
   public void save(User user) {
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
     Set<Role> roles = new HashSet<>();
-    roles.add(roleRepository.findRoleById(Constants.ROLE_USER_ID));
+    roles.add(roleRepository.findRoleByRoleId(Constants.ROLE_USER_ID));
     user.setRoles(roles);
     userRepository.save(user);
     logger.info("New user saved successfully.");
-  }
-
-  @Override
-  public User findByUsername(String username) {
-    return userRepository.findByUsername(username);
   }
 
   @Override

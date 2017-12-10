@@ -54,17 +54,6 @@ public class PublicController {
     return "contact_us";
   }
 
-  //@RequestMapping(value = "/login", method = RequestMethod.GET)
-  public String login(Model model, String error, String logout) {
-    if (error != null)
-      model.addAttribute("error", "Your username and password is invalid.");
-
-    if (logout != null)
-      model.addAttribute("message", "You have been logged out successfully.");
-
-    return "login";
-  }
-
   @RequestMapping(value ="/login", method = RequestMethod.GET)
   public String customLogin(Model model, String error, String logout) {
 
@@ -98,7 +87,7 @@ public class PublicController {
     }*/
 
     userService.save(userForm);
-    securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
+    securityService.autologin(userForm.getEmail(), userForm.getPasswordConfirm());
     logger.debug("Redirecting to the Dashbaord");
 
     return "redirect:/dashboard";

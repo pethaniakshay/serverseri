@@ -2,6 +2,7 @@ package com.serverseri.model;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,31 +16,26 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "user")
 public class User {
-  private Long id;
-  private String username;
+  private Long userId;
+  private String email;
+  private String mobile;
+  private String fullName;
   private String password;
   private String passwordConfirm;
-  private String email;
   private Set<Role> roles;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  public Long getId() {
-    return id;
+  @Column(name = "user_id")
+  public Long getUserId() {
+    return userId;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setUserId(Long userId) {
+    this.userId = userId;
   }
 
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
+  @Column(name = "email")
   public String getEmail() {
     return email;
   }
@@ -48,6 +44,25 @@ public class User {
     this.email = email;
   }
 
+  @Column(name = "mobile")
+  public String getMobile() {
+    return mobile;
+  }
+
+  public void setMobile(String mobile) {
+    this.mobile = mobile;
+  }
+
+  @Column(name = "full_name")
+  public String getFullName() {
+    return fullName;
+  }
+
+  public void setFullName(String fullName) {
+    this.fullName = fullName;
+  }
+
+  @Column(name = "password")
   public String getPassword() {
     return password;
   }

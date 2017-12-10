@@ -22,20 +22,27 @@ import com.serverseri.repository.UserRepository;
 public class UserDetailsServiceImpl implements UserDetailsService{
   @Autowired
   private UserRepository userRepository;
-  
+
   private static final Logger logger = LoggerFactory.getLogger(SecurityServiceImpl.class);
 
   @Override
   @Transactional(readOnly = true)
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userRepository.findByUsername(username);
-
-    Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-    for (Role role : user.getRoles()){
-    	logger.debug("***Role:" + role.getName());
-      grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+    try {
+      User user = userRepository.findByEmail(username);
+      if(user == null) {
+        logger.info("Login attempt failed due to invalid userName: " + username);
+        throw new UsernameNotFoundException(username);
+      }
+      Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+      for (Role role : user.getRoles()){
+        grantedAuthorities.add(new SimpleGrantedAuthority(role.getRoleCode()));
+      }
+      return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
     }
-
-    return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
+    catch (Exception e) {
+      logger.error("User Not Found: ", e);
+      throw new UsernameNotFoundException(username);
+    }
   }
 }

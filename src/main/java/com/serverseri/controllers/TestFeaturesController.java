@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -22,6 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.common.io.ByteStreams;
 import com.serverseri.core.utils.EncrptBean;
 import com.serverseri.core.utils.FreeMakerUtils;
+import com.serverseri.model.User;
+import com.serverseri.repository.UserRepository;
+import com.serverseri.service.UserService;
 
 @Controller
 @RequestMapping(value = "/test")
@@ -35,8 +39,19 @@ public class TestFeaturesController {
   @Autowired
   private FreeMakerUtils freeMakerUtils;
 
-  /*@Autowired
-  private SecureRandomFactoryBean secureRandom;*/
+  @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
+  private UserService userservice;
+
+
+
+  @RequestMapping(value = "/jsch")
+  public String jschTest() {
+    return "jsch_test";
+  }
+
 
   @GetMapping(value = "/rtext" ,produces = MediaType.ALL_VALUE)
   public @ResponseBody byte[] renderTextFileinBrowser() throws Exception {
@@ -74,6 +89,21 @@ public class TestFeaturesController {
     logger.debug("Normal: "+ before);
     logger.debug("Encrypted: " + en + " length: " + en.length());
     logger.debug("Decrypted: " + dc);
+    return "about";
+  }
+
+  @RequestMapping(value = "/repo")
+  public String repoTesting() {
+    List<User> users = userRepository.findAll();
+    logger.debug("User Count: "+ users.size());
+
+    User user = userRepository.findByEmail("patelaksh412@gmail.com");
+    if(user == null) {
+      logger.debug("User Is Null");
+    }
+    else {
+      logger.debug("User is not null");
+    }
     return "about";
   }
 }
