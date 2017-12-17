@@ -7,30 +7,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "user_account_status")
+@Getter
+@Setter
 public class UserAccountStatus {
-
-  private Long userAccountStatusId;
-  private String statusCode;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "user_account_status_id")
-  public Long getUserAccountStatusId() {
-    return userAccountStatusId;
-  }
-
-  public void setUserAccountStatusId(Long userAccountStatusId) {
-    this.userAccountStatusId = userAccountStatusId;
-  }
+  private Long userAccountStatusId;
 
   @Column(name = "status_code")
-  public String getStatusCode() {
-    return statusCode;
-  }
-
-  public void setStatusCode(String statusCode) {
-    this.statusCode = statusCode;
-  }
+  private String statusCode;
 }

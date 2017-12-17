@@ -7,30 +7,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "actor")
+@Getter
+@Setter
 public class Actor {
-
-  private Long actorId;
-  private String actorCode;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "actor_id")
-  public String getActorCode() {
-    return actorCode;
-  }
-
-  public void setActorCode(String actorCode) {
-    this.actorCode = actorCode;
-  }
+  private Long actorId;
 
   @Column(name = "actor_code")
-  public Long getActorId() {
-    return actorId;
-  }
-
-  public void setActorId(Long actorId) {
-    this.actorId = actorId;
-  }
+  private String actorCode;
 }

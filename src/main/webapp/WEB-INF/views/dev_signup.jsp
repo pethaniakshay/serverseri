@@ -12,7 +12,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
 <title>Dev Signup Form</title>
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -58,13 +57,13 @@
               </div>
             </div>
 
-            <div class="control-group">
-              <!-- Password -->
+            <!-- <div class="control-group">
+              Password
               <label class="control-label" for="passwordConfirm">Password (Confirm)</label>
               <div class="controls">
                 <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="" class="input-xlarge">
               </div>
-            </div>
+            </div> -->
             <br>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="control-group">

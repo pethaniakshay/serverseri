@@ -10,83 +10,39 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "user")
+@Getter
+@Setter
 public class User {
-  private Long userId;
-  private String email;
-  private String mobile;
-  private String fullName;
-  private String password;
-  private String passwordConfirm;
-  private Set<Role> roles;
-
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "user_id")
-  public Long getUserId() {
-    return userId;
-  }
-
-  public void setUserId(Long userId) {
-    this.userId = userId;
-  }
+  private Long userId;
 
   @Column(name = "email")
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
+  private String email;
 
   @Column(name = "mobile")
-  public String getMobile() {
-    return mobile;
-  }
-
-  public void setMobile(String mobile) {
-    this.mobile = mobile;
-  }
+  private String mobile;
 
   @Column(name = "full_name")
-  public String getFullName() {
-    return fullName;
-  }
-
-  public void setFullName(String fullName) {
-    this.fullName = fullName;
-  }
+  private String fullName;
 
   @Column(name = "password")
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  @Transient
-  public String getPasswordConfirm() {
-    return passwordConfirm;
-  }
-
-  public void setPasswordConfirm(String passwordConfirm) {
-    this.passwordConfirm = passwordConfirm;
-  }
+  private String password;
 
   @ManyToMany
   @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-  public Set<Role> getRoles() {
-    return roles;
-  }
+  private Set<Role> roles;
 
-  public void setRoles(Set<Role> roles) {
-    this.roles = roles;
-  }
+  @OneToOne
+  @JoinColumn(name = "user_account_status_id", referencedColumnName = "user_account_status_id")
+  private UserAccountStatus uas;
 }
