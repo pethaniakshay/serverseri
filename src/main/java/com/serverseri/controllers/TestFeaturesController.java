@@ -29,7 +29,6 @@ import com.serverseri.core.utils.EncrptBean;
 import com.serverseri.core.utils.FreeMakerUtils;
 import com.serverseri.model.User;
 import com.serverseri.repository.UserRepository;
-import com.serverseri.service.UserService;
 import com.serverseri.service.mail.MailService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -50,9 +49,6 @@ public class TestFeaturesController {
 
   @Autowired
   private MailService mailService;
-
-  @Autowired
-  private UserService userservice;
 
   @RequestMapping(value = "/jsch")
   public String jschTest() {

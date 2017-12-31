@@ -1,6 +1,6 @@
 package com.serverseri.controllers;
 
-import java.util.UUID;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -10,8 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.serverseri.core.constants.Constants;
+import com.serverseri.core.utils.UUIDUtils;
 import com.serverseri.model.User;
 import com.serverseri.model.VerificationToken;
 import com.serverseri.repository.VerificationTokenRepository;
@@ -60,7 +64,7 @@ public class PublicController {
   }
 
   @RequestMapping(value ="/login", method = RequestMethod.GET)
-  public String customLogin(Model model, String error, String logout) {
+  public String customLogin(String error ,Model model, String logout) {
 
     log.debug("User Logged In:" + securityService.isUserLoggedIn());
     if(securityService.isUserLoggedIn()) {
@@ -84,17 +88,22 @@ public class PublicController {
     if(securityService.isUserLoggedIn()) {
       return "redirect:/dashboard";
     }
-    model.addAttribute("hasError",true);
+    //model.addAttribute(Constants.HAS_ERROR,false);
     return "signup";
   }
 
   @RequestMapping(value ="/signup", method = RequestMethod.POST)
-  public String signup(@ModelAttribute User userForm, Model model,WebRequest request){
+  public String signup(@ModelAttribute User userForm, Model model,WebRequest request, final RedirectAttributes redirectAttributes){
     String password = userForm.getPassword();
-    userService.save(userForm);
+    Map<String,Object> userCreateStatus;
+    userCreateStatus = userService.processRegistration(userForm);
+    if(Constants.STATUS_ERROR.equals(userCreateStatus.get(Constants.STATUS))){
+      redirectAttributes.addFlashAttribute("errorMessage", userCreateStatus.get(Constants.MESSAGE));
+      return "redirect:/signup";
+    }
     log.debug("Web Request context path: " + request.getContextPath());
-    String token = UUID.randomUUID().toString();
-    String body = request.getContextPath() + "/confrimatiion?token="+token;
+    String token = UUIDUtils.getUniqueToken();
+    String body = request.getContextPath() + "/confrimation?token="+token;
     VerificationToken verificationToken = new VerificationToken();
     verificationToken.setTokenCode(token);
     verificationToken.setUser(userForm);
@@ -103,5 +112,18 @@ public class PublicController {
     log.info("Verifiaction mail sent for user: "+ userForm.getFullName());
     securityService.autologin(userForm.getEmail(), password);
     return "redirect:/dashboard";
+  }
+
+  @RequestMapping(value = "/confrimation", method = RequestMethod.GET)
+  public String mailVerification(@RequestParam("token")String token) {
+    if(token == null) {
+      log.info("Invalid Token");
+    }
+    else {
+      log.info("Token Code: "+ token);
+      VerificationToken vToken = verificationTokenRepository.findByTokenCode(token);
+      log.info("Token is for user:"+ vToken.getUser().getUserId());
+    }
+    return "new_user_verification";
   }
 }

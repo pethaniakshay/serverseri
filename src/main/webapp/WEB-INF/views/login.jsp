@@ -51,7 +51,8 @@
         </button> -->
       </div>
       <div class="col-md-5">
-        <br>
+        <br> ${error} 
+        ${message}
         <form action="${contextPath}/login" class="login-form validate" id="login-form" method="POST" name="login-form">
           <div class="row">
             <div class="form-group col-md-10">
