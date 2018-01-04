@@ -3,10 +3,16 @@ package com.serverseri.controllers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.sql.Timestamp;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,13 +27,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.io.ByteStreams;
 import com.serverseri.core.utils.EncrptBean;
 import com.serverseri.core.utils.FreeMakerUtils;
+import com.serverseri.model.TempDateTimeMappingTesting;
 import com.serverseri.model.User;
+import com.serverseri.repository.TempDateTimeRepository;
 import com.serverseri.repository.UserRepository;
 import com.serverseri.service.mail.MailService;
 
@@ -49,6 +59,10 @@ public class TestFeaturesController {
 
   @Autowired
   private MailService mailService;
+
+
+  @Autowired
+  private TempDateTimeRepository tempDateTimeRepo;
 
   @RequestMapping(value = "/jsch")
   public String jschTest() {
@@ -128,5 +142,57 @@ public class TestFeaturesController {
     log.debug("User:" + s.size());
 
     return "about";
+  }
+
+  @RequestMapping(value = "/redirecting", method = RequestMethod.GET)
+  public String jsSafeDirectTesting() {
+
+
+    return "test_js_redirect_one";
+  }
+
+  @RequestMapping(value = {"/redirected","/redirected/{id}"}, method = RequestMethod.GET)
+  public String jsSafelyRedirected(@RequestParam(value="token", required = false)String token, Model model, @PathVariable Optional<String> id, final RedirectAttributes attr) {
+
+    if(token != null) {
+      log.debug("Token Value: " + token);
+      model.addAttribute("msg", "This is message is from the controller");
+    }
+    if(id.isPresent()) {
+      log.debug("Optional Token Value: " + token);
+      model.addAttribute("msg", "This is perfct Jquery Reirect as expexted");
+      attr.addFlashAttribute("msg", "Aha This is the perfact redirect attribute");
+      return "redirect:/test/redirected";
+    }
+    return "test_js_redirect_two";
+  }
+
+  @RequestMapping(value="/date_time")
+  public String dateTimeTesting(Model model,HttpServletRequest request) {
+    LocalDateTime nowUTC = LocalDateTime.now(Clock.systemUTC());
+    TempDateTimeMappingTesting temp = new TempDateTimeMappingTesting();
+    temp.setUname("Akshay");
+    Timestamp ts = Timestamp.valueOf(nowUTC);
+    temp.setDate(ts);
+    tempDateTimeRepo.save(temp);
+    ZoneId zoneId = ZoneId.of("Asia/Calcutta");
+    LocalDateTime converted = temp.getDate().toLocalDateTime().atZone(zoneId).toLocalDateTime();
+    log.debug("Final Time: "+ converted);
+    log.info("Temp Object Saved in the databae");
+
+    log.debug("::::::::::::::::::::::::::::::::::::::::::");
+
+    LocalDateTime now = LocalDateTime.now();
+    log.debug("Now: "+ now);
+
+    ZoneId europe = ZoneId.of("Europe/Paris");
+
+    ZonedDateTime europeTime = ZonedDateTime.now(europe);
+    LocalDateTime europeNow = europeTime.toLocalDateTime();
+    log.debug("Europe Now: "+ europeNow);
+
+    ZonedDateTime zdt = europeTime.withZoneSameInstant(zoneId);
+    log.debug("Now: "+ zdt);
+    return "temp_test";
   }
 }
