@@ -193,6 +193,7 @@ public class TestFeaturesController {
 
     ZonedDateTime zdt = europeTime.withZoneSameInstant(zoneId);
     log.debug("Now: "+ zdt);
+    log.debug("Hello World");
     return "temp_test";
   }
 }

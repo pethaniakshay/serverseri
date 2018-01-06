@@ -1,5 +1,7 @@
 package com.serverseri.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,61 +11,33 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "server")
+@Getter
+@Setter
 public class Server {
-
-  private Long serverId;
-  private User user;
-  private String hostName;
-  private String userName;
-  private String password;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "server_id")
-  public Long getServerId() {
-    return serverId;
-  }
-
-  public void setServerId(Long serverId) {
-    this.serverId = serverId;
-  }
+  private Long serverId;
 
   @OneToOne
   @JoinColumn(name = "user_id", referencedColumnName="user_id")
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
+  private User user;
 
   @Column(name = "host_name")
-  public String getHostName() {
-    return hostName;
-  }
-
-  public void setHostName(String hostName) {
-    this.hostName = hostName;
-  }
+  private String hostName;
 
   @Column(name = "user_name")
-  public String getUserName() {
-    return userName;
-  }
-
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
+  private String userName;
 
   @Column(name = "password")
-  public String getPassword() {
-    return password;
-  }
+  private String password;
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+  @Column(name = "created_date")
+  private Timestamp createdDate;
 }
