@@ -60,7 +60,6 @@ public class TestFeaturesController {
   @Autowired
   private MailService mailService;
 
-
   @Autowired
   private TempDateTimeRepository tempDateTimeRepo;
 
@@ -78,7 +77,7 @@ public class TestFeaturesController {
   @GetMapping(value = "/rtext" ,produces = MediaType.ALL_VALUE)
   public @ResponseBody byte[] renderTextFileinBrowser() throws Exception {
     String filePath = context.getRealPath("/WEB-INF/downloads");
-    String fileName = "/sample_1.txt";
+    String fileName = "/SHAA00.sh";
     File file = new File(filePath + fileName);
     InputStream targetStream = new FileInputStream(file);
     return ByteStreams.toByteArray(targetStream);

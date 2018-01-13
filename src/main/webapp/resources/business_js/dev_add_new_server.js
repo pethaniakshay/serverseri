@@ -18,7 +18,7 @@ $(document).ready(function() {
       type : $(this).attr('method'),
       url : $(this).attr('action'),
       dataType : 'json',
-      data : JSON.stringify(formData),
+      data : formData,
       success : function(response) {
         console.log("Response of form submit: ", response);
       },
@@ -28,7 +28,7 @@ $(document).ready(function() {
     });
   });
 
-  $(function() {
+  $(function(){
     var token = $("input[name='_csrf']").val();
     var header = "X-CSRF-TOKEN";
     $(document).ajaxSend(function(e, xhr, options) {
@@ -36,16 +36,4 @@ $(document).ready(function() {
     });
   });
 
-});
-
-/*
- * function processForm(form) { var formData = $(form).serialize();
- * console.log(":::::::::::::::::::::::::::::::"); console.log(form);
- * console.log(":::::::::::::::::::::::::::::::");
- * 
- * $.ajax({ type : 'POST', url : '/serverseri/dev/ajax_add_server_form', data :
- * JSON.stringify($('#newServerForm')), contentType: 'application/json',
- * dataType : 'json', success : function(response) { console.log("Response of
- * form submit: ", response); }, error : function(e) { console.log("Error: ",
- * e); } }); }
- */
+});// End Document Ready

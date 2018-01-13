@@ -29,6 +29,9 @@ public class Server {
   @JoinColumn(name = "user_id", referencedColumnName="user_id")
   private User user;
 
+  @Column(name = "server_name")
+  private String serverName;
+
   @Column(name = "host_name")
   private String hostName;
 

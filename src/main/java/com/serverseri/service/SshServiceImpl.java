@@ -2,8 +2,6 @@ package com.serverseri.service;
 
 import java.io.InputStream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.jcraft.jsch.ChannelExec;
@@ -12,9 +10,11 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.serverseri.model.Server;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class SshServiceImpl implements SshService{
-  private static final Logger logger = LoggerFactory.getLogger(SshServiceImpl.class);
 
   @Override
   public int executeCommand(Server server, String command) {
@@ -32,12 +32,12 @@ public class SshServiceImpl implements SshService{
         while(in.available()>0){
           int i=in.read(tmp, 0, 1024);
           if(i<0)break;
-          System.out.print(new String(tmp, 0, i));
+          log.debug(new String(tmp, 0, i));
           output = output + new String(tmp, 0, i);
         }
         if(channel.isClosed()){
           if(in.available()>0) continue;
-          System.out.println("exit-status: "+channel.getExitStatus());
+          log.debug("exit-status: "+channel.getExitStatus());
           in.close();
           break;
         }
@@ -46,10 +46,31 @@ public class SshServiceImpl implements SshService{
       disconnectSession(session);
     }
     catch(Exception e) {
-      logger.error("In executing command: ", e);
+      log.error("In executing command: ", e);
       return 1;
     }
     return 0;
+  }
+
+  @Override
+  public boolean checkConnection(Server server){
+    try{
+      JSch jsch = getJch();
+      Session session = jsch.getSession(server.getUserName(), server.getHostName());
+      session.setPassword(server.getPassword());
+      java.util.Properties config = new java.util.Properties();
+      config.put("StrictHostKeyChecking", "no");
+      session.setConfig(config);
+      session.connect();
+      if(session.isConnected()){
+        session.disconnect();
+        return true;
+      }
+    } catch(Exception e){
+      log.error("Error: ",e);
+      return false;
+    }
+    return false;
   }
 
   private JSch getJch() {
@@ -65,10 +86,10 @@ public class SshServiceImpl implements SshService{
       java.util.Properties config = new java.util.Properties();
       config.put("StrictHostKeyChecking", "no");
       session.setConfig(config);
-      logger.info("Session Obejct created for: "+ server.getHostName());
+      log.info("Session Obejct created for: "+ server.getHostName());
     }
     catch(Exception e){
-      System.out.println("Error: + "+e);
+      log.error("Error: ", e);
       e.printStackTrace();
     }
     return session;
@@ -79,7 +100,7 @@ public class SshServiceImpl implements SshService{
       session.connect();
     }
     catch(Exception e) {
-      logger.error("Error While connectiong the session: " ,e);
+      log.error("Error While connectiong the session: " ,e);
       return false;
     }
     return true;
@@ -90,7 +111,7 @@ public class SshServiceImpl implements SshService{
       session.disconnect();
     }
     catch(Exception e) {
-      logger.error("Error While disconnectiong the session: " ,e);
+      log.error("Error While disconnectiong the session: " ,e);
       return false;
     }
     return true;
@@ -100,7 +121,7 @@ public class SshServiceImpl implements SshService{
     try {
       return (ChannelExec)session.openChannel("exec");
     } catch (JSchException e) {
-      logger.error("Error while opening exec channel: ", e);
+      log.error("Error while opening exec channel: ", e);
       return null;
     }
   }

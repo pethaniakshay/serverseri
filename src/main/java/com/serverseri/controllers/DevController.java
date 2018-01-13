@@ -31,9 +31,21 @@ public class DevController {
 
   @RequestMapping(value ="/ajax_add_server_form", method = RequestMethod.POST)
   public @ResponseBody Map<String, Object> processServerForm(@RequestParam Map<String ,Object> newServerForm){
-    Map<String ,Object> response = new HashMap<>();
     log.debug(newServerForm.toString());
-    response.put("message","For submittes successfully");
+    Map<String ,Object> response = serverService.addNewServer(newServerForm);
     return response;
   }
+
+  @RequestMapping(value ="/exec_remote", method = RequestMethod.GET)
+  public String executeRemoteScript(){
+    return "test_execute_remote_script";
+  }
+
+  @RequestMapping(value ="/ajax_exec_remote", method = RequestMethod.POST)
+  public @ResponseBody Map<String, Object> executeScript(){
+    log.debug("Going to execute the script!Hurray");
+    Map<String ,Object> response = new HashMap<>();
+    return response;
+  }
+
 }

@@ -6,4 +6,6 @@ public interface SshService {
 
   int executeCommand(Server server, String command);
 
+  boolean checkConnection(Server server);
+
 }
