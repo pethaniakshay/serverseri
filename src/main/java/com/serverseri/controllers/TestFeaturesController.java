@@ -35,10 +35,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.common.io.ByteStreams;
 import com.serverseri.core.utils.EncrptBean;
 import com.serverseri.core.utils.FreeMakerUtils;
+import com.serverseri.model.Server;
 import com.serverseri.model.TempDateTimeMappingTesting;
 import com.serverseri.model.User;
+import com.serverseri.repository.ServerRepository;
 import com.serverseri.repository.TempDateTimeRepository;
 import com.serverseri.repository.UserRepository;
+import com.serverseri.service.SshServiceImpl;
 import com.serverseri.service.mail.MailService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -60,13 +63,82 @@ public class TestFeaturesController {
   @Autowired
   private MailService mailService;
 
+  @Autowired
+  ServerRepository serverRepository;
+
+  @Autowired
+  SshServiceImpl sshServiceImpl;
 
   @Autowired
   private TempDateTimeRepository tempDateTimeRepo;
 
+  @RequestMapping(value="/date_time")
+  public String dateTimeTesting(Model model,HttpServletRequest request) {
+    LocalDateTime nowUTC = LocalDateTime.now(Clock.systemUTC());
+    TempDateTimeMappingTesting temp = new TempDateTimeMappingTesting();
+    temp.setUname("Akshay");
+    Timestamp ts = Timestamp.valueOf(nowUTC);
+    temp.setDate(ts);
+    tempDateTimeRepo.save(temp);
+    ZoneId zoneId = ZoneId.of("Asia/Calcutta");
+    LocalDateTime converted = temp.getDate().toLocalDateTime().atZone(zoneId).toLocalDateTime();
+    log.debug("Final Time: "+ converted);
+    log.info("Temp Object Saved in the databae");
+
+    log.debug("::::::::::::::::::::::::::::::::::::::::::");
+
+    LocalDateTime now = LocalDateTime.now();
+    log.debug("Now: "+ now);
+
+    ZoneId europe = ZoneId.of("Europe/Paris");
+
+    ZonedDateTime europeTime = ZonedDateTime.now(europe);
+    LocalDateTime europeNow = europeTime.toLocalDateTime();
+    log.debug("Europe Now: "+ europeNow);
+    log.debug("::::::::::::::::::::::::::::::::::::::::::::::");
+
+    ZonedDateTime zdt = europeTime.withZoneSameInstant(zoneId);
+    log.debug("Now: "+ zdt);
+    log.debug("Hello World");
+    return "temp_test";
+  }
+
+  @RequestMapping(value ="/fm")
+  public String freeMakerTesting(HttpServletRequest request, WebRequest webRequest) {
+    Map<String,Object> model = new HashMap<>();
+    model.put("empty", "Nothing");
+    String message = freeMakerUtils.templateToString("test.ftl", model);
+    log.debug(message);
+    log.debug("Web Re: " + webRequest.getContextPath() + " * hR: " + request.getContextPath());
+    return "about";
+  }
+
   @RequestMapping(value = "/jsch")
   public String jschTest() {
     return "jsch_test";
+  }
+
+  @RequestMapping(value = "/redirecting", method = RequestMethod.GET)
+  public String jsSafeDirectTesting() {
+
+
+    return "test_js_redirect_one";
+  }
+
+  @RequestMapping(value = {"/redirected","/redirected/{id}"}, method = RequestMethod.GET)
+  public String jsSafelyRedirected(@RequestParam(value="token", required = false)String token, Model model, @PathVariable Optional<String> id, final RedirectAttributes attr) {
+
+    if(token != null) {
+      log.debug("Token Value: " + token);
+      model.addAttribute("msg", "This is message is from the controller");
+    }
+    if(id.isPresent()) {
+      log.debug("Optional Token Value: " + token);
+      model.addAttribute("msg", "This is perfct Jquery Reirect as expexted");
+      attr.addFlashAttribute("msg", "Aha This is the perfact redirect attribute");
+      return "redirect:/test/redirected";
+    }
+    return "test_js_redirect_two";
   }
 
   @RequestMapping(value = "/mail" , method = RequestMethod.GET)
@@ -77,8 +149,8 @@ public class TestFeaturesController {
 
   @GetMapping(value = "/rtext" ,produces = MediaType.ALL_VALUE)
   public @ResponseBody byte[] renderTextFileinBrowser() throws Exception {
-    String filePath = context.getRealPath("/WEB-INF/downloads");
-    String fileName = "/sample_1.txt";
+    String filePath = "/home/prinksh/Documents/scripts";
+    String fileName = "/SHAA00.sh";
     File file = new File(filePath + fileName);
     InputStream targetStream = new FileInputStream(file);
     return ByteStreams.toByteArray(targetStream);
@@ -92,27 +164,6 @@ public class TestFeaturesController {
     File file = new File(filePath + "/" + fileName);
     InputStream targetStream = new FileInputStream(file);
     return ByteStreams.toByteArray(targetStream);
-  }
-
-  @RequestMapping(value ="/fm")
-  public String freeMakerTesting(HttpServletRequest request, WebRequest webRequest) {
-    Map<String,Object> model = new HashMap<>();
-    model.put("empty", "Nothing");
-    String message = freeMakerUtils.templateToString("test.ftl", model);
-    log.debug(message);
-    log.debug("Web Re: " + webRequest.getContextPath() + " * hR: " + request.getContextPath());
-    return "about";
-  }
-
-  @RequestMapping(value = "/uuid")
-  public String UUIDTesting() {
-    String before = UUID.randomUUID().toString();
-    String en = EncrptBean.encrypt(before);
-    String dc = EncrptBean.decrypt(en);
-    log.debug("Normal: "+ before);
-    log.debug("Encrypted: " + en + " length: " + en.length());
-    log.debug("Decrypted: " + dc);
-    return "about";
   }
 
   @RequestMapping(value = "/repo")
@@ -144,56 +195,30 @@ public class TestFeaturesController {
     return "about";
   }
 
-  @RequestMapping(value = "/redirecting", method = RequestMethod.GET)
-  public String jsSafeDirectTesting() {
+  @RequestMapping(value = "/exec")
+  public String sshTest() {
 
 
-    return "test_js_redirect_one";
+    Server server = serverRepository.findServerByServerId(1L);
+    log.debug("--------------------------------------");
+    log.debug("Server:" + server.toString());
+    log.debug("--------------------------------------");
+
+
+
+
+
+    return "about";
   }
 
-  @RequestMapping(value = {"/redirected","/redirected/{id}"}, method = RequestMethod.GET)
-  public String jsSafelyRedirected(@RequestParam(value="token", required = false)String token, Model model, @PathVariable Optional<String> id, final RedirectAttributes attr) {
-
-    if(token != null) {
-      log.debug("Token Value: " + token);
-      model.addAttribute("msg", "This is message is from the controller");
-    }
-    if(id.isPresent()) {
-      log.debug("Optional Token Value: " + token);
-      model.addAttribute("msg", "This is perfct Jquery Reirect as expexted");
-      attr.addFlashAttribute("msg", "Aha This is the perfact redirect attribute");
-      return "redirect:/test/redirected";
-    }
-    return "test_js_redirect_two";
-  }
-
-  @RequestMapping(value="/date_time")
-  public String dateTimeTesting(Model model,HttpServletRequest request) {
-    LocalDateTime nowUTC = LocalDateTime.now(Clock.systemUTC());
-    TempDateTimeMappingTesting temp = new TempDateTimeMappingTesting();
-    temp.setUname("Akshay");
-    Timestamp ts = Timestamp.valueOf(nowUTC);
-    temp.setDate(ts);
-    tempDateTimeRepo.save(temp);
-    ZoneId zoneId = ZoneId.of("Asia/Calcutta");
-    LocalDateTime converted = temp.getDate().toLocalDateTime().atZone(zoneId).toLocalDateTime();
-    log.debug("Final Time: "+ converted);
-    log.info("Temp Object Saved in the databae");
-
-    log.debug("::::::::::::::::::::::::::::::::::::::::::");
-
-    LocalDateTime now = LocalDateTime.now();
-    log.debug("Now: "+ now);
-
-    ZoneId europe = ZoneId.of("Europe/Paris");
-
-    ZonedDateTime europeTime = ZonedDateTime.now(europe);
-    LocalDateTime europeNow = europeTime.toLocalDateTime();
-    log.debug("Europe Now: "+ europeNow);
-
-    ZonedDateTime zdt = europeTime.withZoneSameInstant(zoneId);
-    log.debug("Now: "+ zdt);
-    log.debug("Hello World");
-    return "temp_test";
+  @RequestMapping(value = "/uuid")
+  public String UUIDTesting() {
+    String before = UUID.randomUUID().toString();
+    String en = EncrptBean.encrypt(before);
+    String dc = EncrptBean.decrypt(en);
+    log.debug("Normal: "+ before);
+    log.debug("Encrypted: " + en + " length: " + en.length());
+    log.debug("Decrypted: " + dc);
+    return "about";
   }
 }
