@@ -77,11 +77,11 @@ public class DevController {
     return response;
   }
 
-  @GetMapping(value = "/rtext" ,produces = MediaType.ALL_VALUE)
+  @GetMapping(value = "/rtext/script.txt" ,produces = MediaType.ALL_VALUE)
   public @ResponseBody byte[] renderTextFileinBrowser(@RequestParam("token")String token) throws Exception {
     //String filePath = "/home/prinksh/Documents/scripts/";
     //String fileName = "/SHAA00.sh";
-    File file = new File(scriptPath + token);
+    File file = new File("/home/Documents/scripts/" + token);
     InputStream targetStream = new FileInputStream(file);
     return ByteStreams.toByteArray(targetStream);
   }
