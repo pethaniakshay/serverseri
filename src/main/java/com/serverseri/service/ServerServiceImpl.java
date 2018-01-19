@@ -22,10 +22,7 @@ public class ServerServiceImpl implements ServerService{
 
   @Autowired
   ServerRepository serverRepo;
-
-  @Autowired
-  SshService sshService;
-
+  
   @Autowired
   SecurityService securityService;
 
@@ -33,34 +30,12 @@ public class ServerServiceImpl implements ServerService{
   UserRepository userRepo;
 
   @Override
-  public Map<String,Object> addNewServer(Map<String,Object> serverData){
+  public Map<String,Object> addNewServer(Server server){
 
     Map<String ,Object> response = new HashMap<>();
-    Server server = new Server();
-
     try{
-      //Getting the values in the object
-      log.debug("In Service: "+ serverData.toString());
-      server.setHostName((String)serverData.get("hostName"));
-      server.setUserName((String)serverData.get("userName"));
-      server.setPassword((String)serverData.get("password"));
-      server.setServerName((String)serverData.get("serverName"));
-      //making connection to verify the credential
-
-      log.debug("Host Name: "+ server.getHostName());
-      if(!sshService.checkConnection(server)){
-        log.debug("Server can not be connected");
-        response.put(Constants.STATUS, Constants.STATUS_ERROR);
-        response.put(Constants.MESSAGE,"Your Server Credentials Are incorrect or Host is unreachable!");
-        return response;
-      }
-      log.info("Server connected successfully");
-
-
       //saving the object
-
       String email = securityService.findLoggedInUsername();
-
       User user = userRepo.findByEmail(email);
       server.setUser(user);
       server.setCreatedDate(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));

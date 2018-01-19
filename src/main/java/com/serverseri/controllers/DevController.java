@@ -73,8 +73,9 @@ public class DevController {
   @RequestMapping(value ="/ajax_add_server_form", method = RequestMethod.POST)
   public @ResponseBody Map<String, Object> processServerForm(@RequestParam Map<String ,Object> newServerForm){
     log.debug(newServerForm.toString());
-    Map<String ,Object> response = serverService.addNewServer(newServerForm);
-    return response;
+    /*Map<String ,Object> response = serverService.addNewServer(newServerForm);
+    return response; */
+    return null;
   }
 
   @GetMapping(value = "/rtext/script.txt" ,produces = MediaType.ALL_VALUE)

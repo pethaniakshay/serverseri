@@ -26,8 +26,6 @@ public class MailServiceImpl implements MailService{
     log.info("Sending...............");
     javaMailSender.send(mail);
     log.info("Done!.............");
-
-
   }
 
 }
