@@ -3,8 +3,8 @@
 ### Eclipse ###
 
 .metadata
-#bin/
-#tmp/
+bin/
+tmp/
 *.tmp
 *.bak
 *.swp
@@ -54,13 +54,27 @@ local.properties
 
 ### Eclipse Patch ###
 # Eclipse Core		
-#.project
+.project
 
 # JDT-specific (Eclipse Java Development Tools)		
-#.classpath
+.classpath
 
-#.settings
+.settings
 target/
 
 
 # End of https://www.gitignore.io/api/eclipse
+
+*.class
+
+#folders#
+/target
+/neoDb*
+/data
+/src/main/webapp/WEB-INF/classes
+*/META-INF/*
+
+# Packaged files #
+*.jar
+*.war
+*.ear
