@@ -3,14 +3,14 @@
 ### Eclipse ###
 
 .metadata
-bin/
-tmp/
+#bin/
+#tmp/
 *.tmp
 *.bak
 *.swp
 *~.nib
 local.properties
-.settings/
+#.settings/
 .loadpath
 .recommenders
 
@@ -54,12 +54,12 @@ local.properties
 
 ### Eclipse Patch ###
 # Eclipse Core		
-.project
+#.project
 
 # JDT-specific (Eclipse Java Development Tools)		
-.classpath
+#.classpath
 
-.settings
+#.settings
 target/
 
 
