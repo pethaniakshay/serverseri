@@ -197,16 +197,10 @@ public class TestFeaturesController {
 
   @RequestMapping(value = "/exec")
   public String sshTest() {
-
-
     Server server = serverRepository.findServerByServerId(1L);
     log.debug("--------------------------------------");
     log.debug("Server:" + server.toString());
     log.debug("--------------------------------------");
-
-
-
-
 
     return "about";
   }
@@ -220,5 +214,19 @@ public class TestFeaturesController {
     log.debug("Encrypted: " + en + " length: " + en.length());
     log.debug("Decrypted: " + dc);
     return "about";
+  }
+
+  @RequestMapping(value = "/html_mail")
+  public String htmlMailUsingTemplate() {
+
+    //Getting message body from freemaker template
+
+    Map<String,Object> model = new HashMap<>();
+    model.put("empty", "Nothing");
+    String body = freeMakerUtils.templateToString("test_html_mail.ftl", model);
+
+    //Sending mail
+    mailService.sendHTMLMail("yoserverseri@gmail.com","patelaksh412@gmail.com","Test Mail",body);
+    return "sample_mail_sender";
   }
 }
