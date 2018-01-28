@@ -34,4 +34,11 @@ public class StringUtility {
     logger.info("Converted InputStream into String");
     return sb.toString();
   }
+
+  public static boolean isEmptyOrNull(String string) {
+    if(string != null && !string.isEmpty()) {
+      return false;
+    }
+    return true;
+  }
 }

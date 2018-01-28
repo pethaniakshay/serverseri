@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.serverseri.core.constants.Constants;
 import com.serverseri.core.utils.UUIDUtils;
+import com.serverseri.dto.StandardResponse;
 import com.serverseri.model.User;
 import com.serverseri.model.VerificationToken;
 import com.serverseri.repository.VerificationTokenRepository;
@@ -125,5 +126,21 @@ public class PublicController {
       log.info("Token is for user:"+ vToken.getUser().getUserId());
     }
     return "new_user_verification";
+  }
+
+  @RequestMapping(value = "/recovery", method = RequestMethod.GET)
+  public String forgotPassword() {
+    return "dev/dev_forgot_password";
+  }
+
+  @RequestMapping(value="/ajax_send_passwd_rst_lnk")
+  public StandardResponse sendPasswordResetLink(@RequestParam("email") String email) {
+    return userService.sendPasswordVerifiactionLink(email);
+  }
+
+  public String resetPassword() {
+    String s= "dev_invalid_password_reset_link";
+    //TODO implement all the password reset process stuffs
+    return "dev_reset_password";
   }
 }

@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.serverseri.core.constants.Constants;
+import com.serverseri.core.utils.StringUtility;
+import com.serverseri.dto.StandardResponse;
 import com.serverseri.model.Actor;
 import com.serverseri.model.Role;
 import com.serverseri.model.User;
@@ -21,6 +23,8 @@ import com.serverseri.repository.UasHistoryDescriptionRepository;
 import com.serverseri.repository.UserAccountStatusHistoryRepository;
 import com.serverseri.repository.UserAccountStatusRepository;
 import com.serverseri.repository.UserRepository;
+import com.serverseri.service.mail.MailService;
+import com.serverseri.validator.CommonValidator;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,6 +52,9 @@ public class UserServiceImpl implements UserService {
 
   @Autowired
   private ActorRepository actorRepository;
+
+  @Autowired
+  private MailService mailService;
 
   @SuppressWarnings("boxing")
   @Override
@@ -130,8 +137,39 @@ public class UserServiceImpl implements UserService {
   @Override
   public Map<String,Object> updateUserStatusToVerified(Long userId){
     Map<String,Object> status = new HashMap<String,Object>();
-
-
     return status;
+  }
+
+  @Override
+  public StandardResponse sendPasswordVerifiactionLink(String mailId) {
+
+    StandardResponse response = new StandardResponse();
+    if(StringUtility.isEmptyOrNull(mailId)) {
+      response.setStatus(Constants.STATUS_ERROR);
+      response.setMessage("Mail address is empty or null");
+      return response;
+    }
+
+    if(CommonValidator.emailAddressValidator(mailId)) {
+      response.setStatus(Constants.STATUS_ERROR);
+      response.setMessage("Invalid Email Address");
+      return response;
+    }
+
+    User user = userRepository.findByEmail(mailId);
+
+    if(user == null) {
+      response.setStatus(Constants.STATUS_ERROR);
+      response.setMessage("No user account exist with provided email address.");
+      return response;
+    }
+
+    //TODO Generate Password Rest Code
+
+    //TODO Generate Password Reset Loink
+
+    //TODO Send Maail to the user
+
+    return response;
   }
 }
