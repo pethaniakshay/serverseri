@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito:300,400,600,700,900);
 @media only screen and (min-width: 1824px) {
   body {
     height: 100%; }
@@ -173,7 +174,7 @@
 @media (min-width: 768px) and (max-width: 1024px) {
   /*** Body ***/
   body {
-    background-color: #0aa699 !important;
+    background-color: #6d5eac !important;
     padding-top: 0px; }
 
   .horizontal-menu .page-content {
@@ -424,7 +425,7 @@
     display: none; }
 
   .page-sidebar {
-    background-color: #0aa699 !important; }
+    background-color: #6d5eac !important; }
 
   .page-sidebar .page-sidebar-wrapper > ul > li > a:hover,
   .page-sidebar .page-sidebar-wrapper > ul > li:hover > a {
@@ -504,7 +505,7 @@
     height: 100%; }
 
   .inner-menu-always-open .page-sidebar .page-sidebar-wrapper {
-    background-color: #0aa699 !important; }
+    background-color: #6d5eac !important; }
 
   .inner-menu-always-open .page-sidebar .slimScrollDiv {
     overflow: visible !important; }
@@ -607,7 +608,7 @@
   .page-sidebar {
     position: fixed;
     width: 260px;
-    background-color: #1B1E24 !important; }
+    background-color: #2a2f3a !important; }
 
   .page-sidebar .user-info {
     display: inline-block; }
@@ -654,7 +655,7 @@
 
   .page-sidebar .page-sidebar-wrapper > ul > li > a:hover,
   .page-sidebar .page-sidebar-wrapper > ul > li:hover > a {
-    background: #1B1E24; }
+    background: #2a2f3a; }
 
   .page-sidebar .page-sidebar-wrapper > ul > li.open > a,
   .page-sidebar .page-sidebar-wrapper > ul > li > a:hover,
@@ -755,7 +756,7 @@
     width: 50px; }
 
   .inner-menu-always-open .page-sidebar .page-sidebar-wrapper ul {
-    background-color: #0aa699; }
+    background-color: #6d5eac; }
 
   .inner-menu-always-open .page-sidebar .slimScrollDiv {
     overflow: visible !important; }
@@ -1222,33 +1223,33 @@
 /*** Retina Display Images **/
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 200 / 100), only screen and (min-device-pixel-ratio: 2) {
   .grid.simple .grid-title .tools a {
-    background: url("../img/icon/portlet-tray-2x.png");
+    background: url("../../../img/icon/portlet-tray-2x.png");
     background-size: 199px 57px; }
 
   .tiles .controller a {
     position: relative;
-    background: url("../img/icon/portlet-tray-2x.png");
+    background: url("../../../img/icon/portlet-tray-2x.png");
     background-size: 199px 57px; }
 
   .widget-item .controller a {
     position: relative;
-    background: url("../img/icon/portlet-tray-2x.png");
+    background: url("../../../img/icon/portlet-tray-2x.png");
     background-size: 199px 57px; }
 
   .iconset {
-    background: url("../img/icon/top-trayx2.png") no-repeat;
+    background: url("${base-img-url}/icon/top-tray-bx2.png") no-repeat;
     background-size: 394px 29px; }
 
   .status-icon {
-    background: url("../img/icon/status2x.png");
+    background: url("../../../img/icon/status2x.png");
     background-size: 79px 16px; }
 
   .scrollup {
-    background: url("../img/pullup2x.png");
+    background: url("../../../img/pullup2x.png");
     background-size: 57px 27px; }
 
   .alert .close {
-    background: url("../img/icon/noti-cross-2x.png") no-repeat scroll 0 0 transparent;
+    background: url("../../../img/icon/noti-cross-2x.png") no-repeat scroll 0 0 transparent;
     background-position: -9px -10px;
     width: 10px;
     height: 9px;

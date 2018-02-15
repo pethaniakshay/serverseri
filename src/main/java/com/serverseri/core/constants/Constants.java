@@ -24,4 +24,19 @@ public class Constants {
   public static final int USER_ACCOUNT_STATUS_VERIFIED_ID = 2;
   public static final String USER_ACCOUNT_STATUS_VERIFIED = "Verified";
 
+  public static final String FORWARD_SLASH = "/";
+  public static final String TOKEN_VALUE_SPLITTER = "_<->_";
+
+  public static final String APP_INTERNAL_DATE_TIME_FORMAT = "yyyy-MM-dd-HH-mm";
+
+  //Public URL
+
+  public static final String FORGOT_PASSWORD = "/recovery";
+  public static final String AJAX_SEND_PASSWD_RESET_LINK = "/ajax_send_passwd_rst_lnk";
+  public static final String RESET_PASSWD = "/reset_password";
+  public static final String RESOURCES = "/resources/**";
+  public static final String REGISTRATION = "/registration";
+  public static final String DEV = "/dev/**";
+  public static final String TEST = "/test/**";
+  public static final String ADMIN_URL = "/admin";
 }

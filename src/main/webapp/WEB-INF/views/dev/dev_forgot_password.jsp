@@ -30,6 +30,7 @@
       <div class="col-md-12">
       <input type="text" name="text" required="required" class="form-controll" id="email">
       </div>
+      <br>
       <div class="col-md-12">
       <button class="btn btn-danger" id="submit">Send Me Verification Code</button>
       </div>

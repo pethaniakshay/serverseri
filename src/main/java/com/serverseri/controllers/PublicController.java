@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.common.base.Strings;
 import com.serverseri.core.constants.Constants;
 import com.serverseri.core.utils.UUIDUtils;
 import com.serverseri.dto.StandardResponse;
@@ -104,7 +106,7 @@ public class PublicController {
     }
     log.debug("Web Request context path: " + request.getContextPath());
     String token = UUIDUtils.getUniqueToken();
-    String body = request.getContextPath() + "/confrimation?token="+token;
+    String body = request.getContextPath() + "/confirmation?token="+token;
     VerificationToken verificationToken = new VerificationToken();
     verificationToken.setTokenCode(token);
     verificationToken.setUser(userForm);
@@ -115,9 +117,9 @@ public class PublicController {
     return "redirect:/dashboard";
   }
 
-  @RequestMapping(value = "/confrimation", method = RequestMethod.GET)
+  @RequestMapping(value = "/confirmation", method = RequestMethod.GET)
   public String mailVerification(@RequestParam("token")String token) {
-    if(token == null) {
+    if(Strings.isNullOrEmpty(token)) {
       log.info("Invalid Token");
     }
     else {
@@ -128,19 +130,31 @@ public class PublicController {
     return "new_user_verification";
   }
 
+  //Forget Password Mappings
+
   @RequestMapping(value = "/recovery", method = RequestMethod.GET)
   public String forgotPassword() {
-    return "dev/dev_forgot_password";
+    //return "dev/dev_forgot_password";
+    return "forgot_password";
   }
 
   @RequestMapping(value="/ajax_send_passwd_rst_lnk")
-  public StandardResponse sendPasswordResetLink(@RequestParam("email") String email) {
+  public @ResponseBody StandardResponse sendPasswordResetLink(@RequestParam("email") String email) {
     return userService.sendPasswordVerifiactionLink(email);
   }
 
-  public String resetPassword() {
-    String s= "dev_invalid_password_reset_link";
+  @RequestMapping(value = "/reset_password", method = RequestMethod.GET)
+  public String resetPassword(@RequestParam("token")String token, Model model) {
+
+    if(Strings.isNullOrEmpty(token)) {
+      log.info("Invalid Token");
+    }
+    StandardResponse validity = userService.verifyPasswordResetToken(token);
+    if(Constants.STATUS_ERROR.equals(validity.getStatus())) {
+      return "dev/dev_invalid_password_reset_link";
+    }
+    model.addAttribute("email", validity.getPayLoadOne());
     //TODO implement all the password reset process stuffs
-    return "dev_reset_password";
+    return "dev/dev_reset_password";
   }
 }

@@ -213,6 +213,7 @@ public class TestFeaturesController {
     log.debug("Normal: "+ before);
     log.debug("Encrypted: " + en + " length: " + en.length());
     log.debug("Decrypted: " + dc);
+
     return "about";
   }
 

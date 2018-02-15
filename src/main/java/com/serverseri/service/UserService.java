@@ -12,4 +12,6 @@ public interface UserService {
   User findByEmail(String email);
   Map<String,Object> updateUserStatusToVerified(Long userId);
   StandardResponse sendPasswordVerifiactionLink(String mailId);
+  StandardResponse verifyPasswordResetToken(String resetToken);
+  StandardResponse resetPassword(String resetToken, String password, String confirmPassword);
 }

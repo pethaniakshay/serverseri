@@ -1,7 +1,5 @@
 (function($) {
-
     'use strict';
-
     var Webarch = function() {
         this.VERSION = "2.8.0";
         this.AUTHOR = "Revox";
@@ -72,7 +70,6 @@
                 jQuery(this).parents(".grid").parent().remove();
             }
         });
-
         $('.grid .tools a.reload').on('click', function () {
             var el = jQuery(this).parents(".grid");
             $this.blockUI(el);
@@ -80,7 +77,6 @@
                 $this.unblockUI(el);
             }, 1000);
         });
-
         $('.grid .tools .collapse, .grid .tools .expand').on('click', function () {
             var el = jQuery(this).parents(".grid").children(".grid-body");
             if (jQuery(this).hasClass("collapse")) {
@@ -105,7 +101,6 @@
                 $('#id_remove_temp_id').remove();
             }, 400);
         });
-
         $('.tiles .controller .reload').click(function () {
             var el = $(this).parent().parent().parent();
             $this.blockUI(el);
@@ -209,7 +204,6 @@
             timer= setTimeout(function(){
                 $('.page-sidebar').removeClass('visible');
             }, 300);
-            
         }
         else{
             clearTimeout(timer);
@@ -249,11 +243,9 @@
         $('[data-aspect-ratio="true"]').each(function () {
             $(this).height($(this).width());
         });
-
         $('[data-sync-height="true"]').each(function () {
             equalHeight($(this).children());
         });
-
         $('[data-webarch-toggler="checkall"]').on('click', function () {
             var $el = $(this);
             var $table =  $el.closest('table');
@@ -265,7 +257,6 @@
                $table.find('tr').removeClass('row_selected');
             }
         });
-
         $(window).resize(function () {
             $('[data-aspect-ratio="true"]').each(function () {
                 $(this).height($(this).width());
@@ -273,7 +264,6 @@
             $('[data-sync-height="true"]').each(function () {
                 equalHeight($(this).children());
             });
-
         });
         function equalHeight(group) {
             var tallest = 0;
@@ -291,11 +281,9 @@
                 return $('#notification-list').html();
             }
         });
-
         $('#user-options').click(function () {
             $('#my-task-list').popover('hide');
         });
-        
         $('table th .checkall').on('click', function () {
             if ($(this).is(':checked')) {
                 $(this).closest('table').find(':checkbox').attr('checked', true);

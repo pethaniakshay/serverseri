@@ -1,5 +1,10 @@
 package com.serverseri.service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -8,8 +13,10 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.WebRequest;
 
 import com.serverseri.core.constants.Constants;
+import com.serverseri.core.utils.EncrptBean;
 import com.serverseri.core.utils.StringUtility;
 import com.serverseri.dto.StandardResponse;
 import com.serverseri.model.Actor;
@@ -56,16 +63,16 @@ public class UserServiceImpl implements UserService {
   @Autowired
   private MailService mailService;
 
+  @Autowired
+  private WebRequest webRequest;
+
   @SuppressWarnings("boxing")
   @Override
   public void save(User user) {
     try {
-
       User tempUser = findByEmail(user.getEmail());
       if(tempUser == null) {
-
       }
-
       user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
       Set<Role> roles = new HashSet<>();
       roles.add(roleRepository.findRoleByRoleId(Constants.ROLE_USER_ID));
@@ -150,25 +157,77 @@ public class UserServiceImpl implements UserService {
       return response;
     }
 
-    if(CommonValidator.emailAddressValidator(mailId)) {
+    if(!CommonValidator.emailAddressValidator(mailId)) {
       response.setStatus(Constants.STATUS_ERROR);
       response.setMessage("Invalid Email Address");
       return response;
     }
 
     User user = userRepository.findByEmail(mailId);
-
     if(user == null) {
       response.setStatus(Constants.STATUS_ERROR);
       response.setMessage("No user account exist with provided email address.");
       return response;
     }
+    //Generate Password Rest Code
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Constants.APP_INTERNAL_DATE_TIME_FORMAT);
+    ZonedDateTime startTimUTC = ZonedDateTime.now(ZoneOffset.UTC);
+    log.debug("Current Time UTC: "+ startTimUTC.toString());
+    String resetCode =  startTimUTC.format(timeFormatter)+"_<->_"+mailId;
+    log.debug("::Reset Link: " + resetCode + "  ::  Web Request: ");
+    resetCode = EncrptBean.encrypt(resetCode);
+    String resetLink = webRequest.getContextPath() + Constants.FORWARD_SLASH + resetCode;
+    //Send Mail to the user
+    mailService.sendHTMLMail("yoserverseri@gmail.com", mailId, "Password Reset Link", resetLink);
+    log.info("Password Reset Link is sent");
+    response.setStatus(Constants.STATUS_SUCCESS);
+    response.setMessage("Password Reset Link is sent.");
+    return response;
+  }
 
-    //TODO Generate Password Rest Code
+  @Override
+  public StandardResponse verifyPasswordResetToken(String resetToken) {
+    StandardResponse response = new StandardResponse();
+    //TODO Decrypt Token
+    resetToken = EncrptBean.decrypt(resetToken);
+    //TODO Split the Token
+    String[] tokenValues = resetToken.split(Constants.TOKEN_VALUE_SPLITTER);
+    String time = tokenValues[0];
+    String email = tokenValues[1];
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(Constants.APP_INTERNAL_DATE_TIME_FORMAT);
+    ZonedDateTime generatedTime = LocalDateTime.parse(time, timeFormatter).atZone(ZoneOffset.UTC);
+    ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);
+    long hours = ChronoUnit.HOURS.between(generatedTime, now);
+    log.debug("Time: "+ generatedTime +  "   Email: "+ email);
+    if(hours > 8) {
+      //Return as the link expired;
+      log.info("Linke Expired");
+      response.setStatus(Constants.STATUS_SUCCESS);
+      return response;
+    }
+    response.setStatus(Constants.STATUS_SUCCESS);
+    response.setMessage("Password Reset Link is sent.");
+    response.setPayLoadOne(EncrptBean.encrypt(email));
+    return response;
+  }
 
-    //TODO Generate Password Reset Loink
+  @Override
+  public StandardResponse resetPassword(String email, String password, String confirmPassword) {
+    StandardResponse response = new StandardResponse();
 
-    //TODO Send Maail to the user
+    //TODO check weather all the strings are empty or not
+
+    email = EncrptBean.decrypt(email);
+
+    //TODO check for the validity of the email
+
+
+    //TODO find user by the email address
+
+    //TODO match the password and the confirm password
+
+    //TODO write the password in the object and persist it
+
 
     return response;
   }

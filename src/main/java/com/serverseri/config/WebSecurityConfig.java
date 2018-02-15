@@ -31,8 +31,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http
     .authorizeRequests() //Manage what pages allow to whom
-    .antMatchers("/resources/**", "/registration","/","/about","/contact","/signup","/test/**","/dev/**").permitAll()
-    .antMatchers("/admin").hasRole(Constants.ADMIN)
+    .antMatchers(Constants.RESOURCES, Constants.REGISTRATION,Constants.FORWARD_SLASH,Constants.DEV,Constants.TEST,"/about","/contact","/signup",Constants.FORGOT_PASSWORD,
+        Constants.RESET_PASSWD, Constants.AJAX_SEND_PASSWD_RESET_LINK).permitAll()
+    .antMatchers(Constants.ADMIN_URL).hasRole(Constants.ADMIN)
     .antMatchers("/dashboard/**").hasRole(Constants.USER)
     .anyRequest().authenticated()
     .and()
