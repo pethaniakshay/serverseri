@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http
     .authorizeRequests() //Manage what pages allow to whom
     .antMatchers(Constants.RESOURCES, Constants.REGISTRATION,Constants.FORWARD_SLASH,Constants.DEV,Constants.TEST,"/about","/contact","/signup",Constants.FORGOT_PASSWORD,
-        Constants.RESET_PASSWD, Constants.AJAX_SEND_PASSWD_RESET_LINK).permitAll()
+        Constants.RESET_PASSWD, Constants.AJAX_SEND_PASSWD_RESET_LINK, Constants.AJAX_RESET_PASSWD).permitAll()
     .antMatchers(Constants.ADMIN_URL).hasRole(Constants.ADMIN)
     .antMatchers("/dashboard/**").hasRole(Constants.USER)
     .anyRequest().authenticated()

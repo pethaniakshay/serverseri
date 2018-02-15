@@ -7,7 +7,9 @@ import javax.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,7 +49,7 @@ public class PublicController {
   @Autowired
   private VerificationTokenRepository verificationTokenRepository;
 
-  @RequestMapping(value = "/", method = RequestMethod.GET)
+  @RequestMapping(value = Constants.FORWARD_SLASH, method = RequestMethod.GET)
   public String home(Model model) {
     log.debug("Real Path:" + context.getRealPath(""));
     log.debug(""+securityService.isUserLoggedIn());
@@ -117,7 +119,7 @@ public class PublicController {
     return "redirect:/dashboard";
   }
 
-  @RequestMapping(value = "/confirmation", method = RequestMethod.GET)
+  @GetMapping("/confirmation")
   public String mailVerification(@RequestParam("token")String token) {
     if(Strings.isNullOrEmpty(token)) {
       log.info("Invalid Token");
@@ -132,18 +134,18 @@ public class PublicController {
 
   //Forget Password Mappings
 
-  @RequestMapping(value = "/recovery", method = RequestMethod.GET)
+  @GetMapping(Constants.FORGOT_PASSWORD)
   public String forgotPassword() {
     //return "dev/dev_forgot_password";
     return "forgot_password";
   }
 
-  @RequestMapping(value="/ajax_send_passwd_rst_lnk")
+  @PostMapping(value=Constants.AJAX_SEND_PASSWD_RESET_LINK)
   public @ResponseBody StandardResponse sendPasswordResetLink(@RequestParam("email") String email) {
     return userService.sendPasswordVerifiactionLink(email);
   }
 
-  @RequestMapping(value = "/reset_password", method = RequestMethod.GET)
+  @GetMapping(Constants.RESET_PASSWD)
   public String resetPassword(@RequestParam("token")String token, Model model) {
 
     if(Strings.isNullOrEmpty(token)) {
@@ -154,7 +156,14 @@ public class PublicController {
       return "dev/dev_invalid_password_reset_link";
     }
     model.addAttribute("email", validity.getPayLoadOne());
-    //TODO implement all the password reset process stuffs
-    return "dev/dev_reset_password";
+    //implement all the password reset process stuffs
+
+    // return "dev/dev_reset_password";
+    return "/reset_password";
+  }
+
+  @PostMapping(Constants.AJAX_RESET_PASSWD)
+  public @ResponseBody StandardResponse resetPassword(@RequestParam Map<String ,String> passwordResetForm) {
+    return userService.resetPassword(passwordResetForm.get("email"), passwordResetForm.get("password"), passwordResetForm.get("confirmPassword"));
   }
 }

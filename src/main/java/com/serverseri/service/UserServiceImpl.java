@@ -215,20 +215,60 @@ public class UserServiceImpl implements UserService {
   public StandardResponse resetPassword(String email, String password, String confirmPassword) {
     StandardResponse response = new StandardResponse();
 
-    //TODO check weather all the strings are empty or not
+    //check weather all the strings are empty or not
+    if(StringUtility.isEmptyOrNull(email)) {
+      response.setStatus(Constants.STATUS_ERROR);
+      response.setMessage("Mail address is empty or null");
+      return response;
+    }
+
+    if(StringUtility.isEmptyOrNull(password)) {
+      response.setStatus(Constants.STATUS_ERROR);
+      response.setMessage("Password Empty or Null.");
+      return response;
+    }
+
+    if(StringUtility.isEmptyOrNull(confirmPassword)) {
+      response.setStatus(Constants.STATUS_ERROR);
+      response.setMessage("Confirm Password Empty or Null.");
+      return response;
+    }
 
     email = EncrptBean.decrypt(email);
 
-    //TODO check for the validity of the email
+    //check for the validity of the email
+    if(!CommonValidator.emailAddressValidator(email)) {
+      response.setStatus(Constants.STATUS_ERROR);
+      response.setMessage("Invalid Email Address");
+      return response;
+    }
 
+    //find user by the email address
+    User user = findByEmail(email);
 
-    //TODO find user by the email address
+    if(user == null) {
+      response.setStatus(Constants.STATUS_ERROR);
+      response.setMessage("User Does not exist. Invalid Email Address.");
+      return response;
+    }
 
-    //TODO match the password and the confirm password
+    //match the password and the confirm password
+    if(!password.equals(confirmPassword)) {
+      response.setStatus(Constants.STATUS_ERROR);
+      response.setMessage("Passwords Do not match.");
+      return response;
+    }
 
-    //TODO write the password in the object and persist it
+    //TODO determine the password strength and validate the strenght as per application requirement.
 
+    //TODO match with old password and do not allow to set the same passord.
 
+    //write the password in the object and persist it
+    user.setPassword(bCryptPasswordEncoder.encode(password));
+    userRepository.save(user);
+    log.info("Password Reset Successfully.");
+    response.setStatus(Constants.STATUS_SUCCESS);
+    response.setMessage("Password Reset Successfully.");
     return response;
   }
 }

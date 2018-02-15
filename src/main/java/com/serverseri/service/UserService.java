@@ -13,5 +13,5 @@ public interface UserService {
   Map<String,Object> updateUserStatusToVerified(Long userId);
   StandardResponse sendPasswordVerifiactionLink(String mailId);
   StandardResponse verifyPasswordResetToken(String resetToken);
-  StandardResponse resetPassword(String resetToken, String password, String confirmPassword);
+  StandardResponse resetPassword(String email, String password, String confirmPassword);
 }
