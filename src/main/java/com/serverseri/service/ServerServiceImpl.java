@@ -22,13 +22,17 @@ public class ServerServiceImpl implements ServerService{
 
   @Autowired
   ServerRepository serverRepo;
-  
+
   @Autowired
   SecurityService securityService;
 
   @Autowired
+  ServerLogService serverLogService;
+
+  @Autowired
   UserRepository userRepo;
 
+  @SuppressWarnings("boxing")
   @Override
   public Map<String,Object> addNewServer(Server server){
 
@@ -40,6 +44,7 @@ public class ServerServiceImpl implements ServerService{
       server.setUser(user);
       server.setCreatedDate(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
       serverRepo.saveAndFlush(server);
+      serverLogService.log(server, Constants.SERVER_CREATE,"Server Created");
 
       log.info("Server registered");
       response.put(Constants.STATUS, Constants.STATUS_SUCCESS);

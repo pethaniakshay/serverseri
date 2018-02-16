@@ -6,4 +6,6 @@ import com.serverseri.model.MasterServerLog;
 
 public interface MasterServerLogRepository extends JpaRepository<MasterServerLog, Long>{
 
+  MasterServerLog findByLogId(Long id);
+
 }

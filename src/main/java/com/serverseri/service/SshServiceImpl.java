@@ -2,12 +2,14 @@ package com.serverseri.service;
 
 import java.io.InputStream;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.serverseri.core.constants.Constants;
 import com.serverseri.model.Server;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class SshServiceImpl implements SshService{
+
+  @Autowired
+  ServerLogService serverLogService;
 
   @Override
   public boolean checkConnection(Server server){
@@ -28,6 +33,7 @@ public class SshServiceImpl implements SshService{
       session.connect();
       if(session.isConnected()){
         session.disconnect();
+        serverLogService.log(server, Constants.SERVER_PING, "Pinged");
         return true;
       }
     } catch(Exception e){

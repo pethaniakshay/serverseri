@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.serverseri.core.constants.Constants;
@@ -18,20 +18,21 @@ import lombok.extern.slf4j.Slf4j;
 @Controller(value="/server")
 @Slf4j
 public class ServerController {
-  
+
   @Autowired
   ServerValidator serverValidator;
-  
+
   @Autowired
   SshService sshService;
-  
+
   @Autowired
   ServerService serverService;
-  
-  @RequestMapping("/ajax_save")
+
+  public static final String AJAX_ADD_SERVER ="/ajax_save";
+
+  @PostMapping(AJAX_ADD_SERVER)
   public Map<String,Object> addNewServer(@RequestParam Map<String ,Object> newServerForm) {
-    
-    Map<String,Object> response = serverValidator.validateNewServer(newServerForm); 
+    Map<String,Object> response = serverValidator.validateNewServer(newServerForm);
     if(response.get(Constants.STATUS).equals(Constants.STATUS_SUCCESS)) {
       //GO to save the server
       Server server = (Server)response.get("server");
@@ -41,11 +42,11 @@ public class ServerController {
         response.put(Constants.STATUS, Constants.STATUS_ERROR);
         response.put(Constants.MESSAGE,"Your Server Credentials Are incorrect or Host is unreachable!");
         return response;
-      } 
+      }
       response = serverService.addNewServer(server);
       log.info("Server connected successfully");
       return response;
-    }  
+    }
     return response;
   }
 }

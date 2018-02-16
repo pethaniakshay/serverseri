@@ -29,15 +29,29 @@ public class Constants {
 
   public static final String APP_INTERNAL_DATE_TIME_FORMAT = "yyyy-MM-dd-HH-mm";
 
-  //Public URL
 
+  //URL Static resources
+  public static final String RESOURCES = "/resources/**";
+
+  //URL Public
   public static final String FORGOT_PASSWORD = "/recovery";
   public static final String AJAX_SEND_PASSWD_RESET_LINK = "/ajax_send_passwd_rst_lnk";
   public static final String RESET_PASSWD = "/reset_password";
-  public static final String RESOURCES = "/resources/**";
   public static final String REGISTRATION = "/registration";
   public static final String DEV = "/dev/**";
   public static final String TEST = "/test/**";
   public static final String ADMIN_URL = "/admin";
   public static final String AJAX_RESET_PASSWD ="/ajax_reset_passwd";
+
+  //URL private
+  public static final String ROOT_URL_FWD_SLASH ="/";
+  public static final String ROOT_URL_BLANK ="";
+  public static final String SERVER = "/server";
+
+  //Masert Server Log Id
+  public static final Long SERVER_CREATE = 1L;
+  public static final Long SERVER_EXECUTE = 2L;
+  public static final Long SERVER_DELETE = 3L;
+  public static final Long SERVER_PING = 4L;
+
 }

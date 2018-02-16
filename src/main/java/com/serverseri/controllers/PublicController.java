@@ -49,7 +49,7 @@ public class PublicController {
   @Autowired
   private VerificationTokenRepository verificationTokenRepository;
 
-  @RequestMapping(value = Constants.FORWARD_SLASH, method = RequestMethod.GET)
+  @RequestMapping(value = Constants.ROOT_URL_FWD_SLASH, method = RequestMethod.GET)
   public String home(Model model) {
     log.debug("Real Path:" + context.getRealPath(""));
     log.debug(""+securityService.isUserLoggedIn());
@@ -147,7 +147,6 @@ public class PublicController {
 
   @GetMapping(Constants.RESET_PASSWD)
   public String resetPassword(@RequestParam("token")String token, Model model) {
-
     if(Strings.isNullOrEmpty(token)) {
       log.info("Invalid Token");
     }

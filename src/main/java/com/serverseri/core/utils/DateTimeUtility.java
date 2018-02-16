@@ -3,11 +3,20 @@ package com.serverseri.core.utils;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 public class DateTimeUtility {
 
   public static final String UTC = "UTC";
+
+  public static Timestamp currentUTCTimeStamp() {
+    return  Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+  }
+
+  public static Timestamp getTimeStamp(LocalDateTime dateTime) {
+    return Timestamp.valueOf(dateTime);
+  }
 
   public static LocalDateTime anyToUtc(LocalDateTime dateTime, ZoneId sourceZoneId) {
     return changeZone(dateTime, sourceZoneId,ZoneId.of(UTC));

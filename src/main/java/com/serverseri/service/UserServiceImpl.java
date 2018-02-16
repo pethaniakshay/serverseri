@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
   @SuppressWarnings("boxing")
   @Override
-  public void save(User user) {
+  public void saveNewUser(User user) {
     try {
       User tempUser = findByEmail(user.getEmail());
       if(tempUser == null) {
@@ -80,7 +80,6 @@ public class UserServiceImpl implements UserService {
       user.setUas(uasRepository.findByUserAccountStatusId(Constants.USER_ACCOUNT_STATUS_CREATED_ID));
       user =userRepository.save(user);
       log.info("New user saved successfully.");
-
       UserAccountStatusHistoryDescription desc = uasHisDescRepo.findByDescriptionId(1); //user created
       Actor actor = actorRepository.findByActorId(4);
       UserAccountStatusHistory history = new UserAccountStatusHistory();
@@ -100,6 +99,7 @@ public class UserServiceImpl implements UserService {
     return userRepository.findByEmail(email);
   }
 
+  @SuppressWarnings("boxing")
   @Override
   public Map<String,Object> processRegistration(User user){
 
@@ -149,7 +149,6 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public StandardResponse sendPasswordVerifiactionLink(String mailId) {
-
     StandardResponse response = new StandardResponse();
     if(StringUtility.isEmptyOrNull(mailId)) {
       response.setStatus(Constants.STATUS_ERROR);
@@ -188,9 +187,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public StandardResponse verifyPasswordResetToken(String resetToken) {
     StandardResponse response = new StandardResponse();
-    //TODO Decrypt Token
     resetToken = EncrptBean.decrypt(resetToken);
-    //TODO Split the Token
     String[] tokenValues = resetToken.split(Constants.TOKEN_VALUE_SPLITTER);
     String time = tokenValues[0];
     String email = tokenValues[1];

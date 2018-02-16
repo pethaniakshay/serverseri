@@ -36,6 +36,5 @@ public class AfterLoggedInService implements AuthenticationSuccessHandler {
     } else {
       response.sendRedirect(request.getContextPath() + "/");
     }
-    logger.debug("After Login Service");
   }
 }

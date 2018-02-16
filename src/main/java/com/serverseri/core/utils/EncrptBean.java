@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-@SuppressWarnings("restriction")
 @Service
 public class EncrptBean {
   private final static Logger logger = LoggerFactory

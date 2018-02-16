@@ -19,8 +19,8 @@ public class MasterServerLog {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "master_log_id")
-  private Long mstServerLogId;
+  private Long logId;
 
   @Column(name="log_description")
-  private String logDescription;
+  private String description;
 }

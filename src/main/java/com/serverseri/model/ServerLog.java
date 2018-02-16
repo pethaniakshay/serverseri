@@ -1,5 +1,7 @@
 package com.serverseri.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,4 +32,10 @@ public class ServerLog {
   @OneToOne
   @JoinColumn(name = "master_server_log_id", referencedColumnName = "master_log_id")
   private MasterServerLog mstServerLog;
+
+  @Column(name="description")
+  private String  description;
+
+  @Column(name="log_date")
+  private Timestamp logDate;
 }
