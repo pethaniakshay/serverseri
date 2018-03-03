@@ -61,7 +61,7 @@ public class DevController {
     log.debug("File Name: " + file);
 
     String command = "bash <(curl -s http://mywebsite.com/myscript.txt)";
-    Server server = serverRepo.findOne(1L);
+    Server server = serverRepo.getOne(1L);
     log.debug("Con Path: " + request.getContextPath());
 
     sshServiceImpl.executeCommand(server ,file);

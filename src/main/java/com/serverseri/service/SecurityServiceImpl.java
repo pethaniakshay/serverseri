@@ -67,5 +67,4 @@ public class SecurityServiceImpl implements SecurityService{
       log.error("Auto login falied. Error: ", e);
     }
   }
-
 }
