@@ -35,12 +35,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.common.io.ByteStreams;
 import com.serverseri.core.utils.EncrptBean;
 import com.serverseri.core.utils.FreeMakerUtils;
+import com.serverseri.dao.repository.ServerRepository;
+import com.serverseri.dao.repository.TempDateTimeRepository;
+import com.serverseri.dao.repository.UserRepository;
 import com.serverseri.model.Server;
 import com.serverseri.model.TempDateTimeMappingTesting;
 import com.serverseri.model.User;
-import com.serverseri.repository.ServerRepository;
-import com.serverseri.repository.TempDateTimeRepository;
-import com.serverseri.repository.UserRepository;
 import com.serverseri.service.SshServiceImpl;
 import com.serverseri.service.mail.MailService;
 

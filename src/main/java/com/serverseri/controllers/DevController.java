@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.io.ByteStreams;
+import com.serverseri.dao.repository.ServerRepository;
 import com.serverseri.model.Server;
-import com.serverseri.repository.ServerRepository;
 import com.serverseri.service.ServerService;
 import com.serverseri.service.SshServiceImpl;
 

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.serverseri.core.constants.Constants;
+import com.serverseri.dao.repository.ServerRepository;
 import com.serverseri.model.Server;
-import com.serverseri.repository.ServerRepository;
 
 @Component
 public class ServerValidator {

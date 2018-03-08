@@ -1,4 +1,4 @@
-package com.serverseri.repository;
+package com.serverseri.dao.repository;
 
 import java.sql.Timestamp;
 import java.util.List;

@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.serverseri.dao.repository.ServerLogRepository;
 import com.serverseri.model.MasterServerLog;
 import com.serverseri.model.Server;
 import com.serverseri.model.ServerLog;
-import com.serverseri.repository.ServerLogRepository;
 
 @Service
 public class ServerLogDaoImpl implements ServerLogDao{

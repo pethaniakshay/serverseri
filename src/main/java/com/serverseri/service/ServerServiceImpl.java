@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.serverseri.core.constants.Constants;
+import com.serverseri.dao.repository.ServerRepository;
+import com.serverseri.dao.repository.UserRepository;
 import com.serverseri.model.Server;
 import com.serverseri.model.User;
-import com.serverseri.repository.ServerRepository;
-import com.serverseri.repository.UserRepository;
 
 import lombok.extern.slf4j.Slf4j;
 @Service

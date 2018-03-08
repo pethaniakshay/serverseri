@@ -5,12 +5,12 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.serverseri.dao.repository.MasterServerLogRepository;
 import com.serverseri.model.MasterServerLog;
-import com.serverseri.repository.MasterServerLogRepository;
 
 @Service
 @Transactional
-public class MasterServerLogDaoImpl implements MasterServerLogDao{
+public class MasterServerLogDaoImpl extends AbstractDao implements MasterServerLogDao{
 
   @Autowired
   MasterServerLogRepository repository;

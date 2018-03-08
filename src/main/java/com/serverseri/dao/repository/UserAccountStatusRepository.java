@@ -1,4 +1,4 @@
-package com.serverseri.repository;
+package com.serverseri.dao.repository;
 
 import java.util.List;
 
